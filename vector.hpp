@@ -21,7 +21,7 @@ T **element;
 void doublespace()
 {
     T**temp;
-    capacity*=2;
+    capacity*=3;
    temp=new T*[capacity];
     for (int i = current_size-1; i <capacity ; ++i) {
         (temp[i])= nullptr;
@@ -81,13 +81,11 @@ T **vec;
             return pos;
 		 }
 		iterator operator+(const int &n) const {
-iterator temp(vec,pos+n);
-            return temp;
+            return iterator(vec,pos+n);
 			//TODO
 		}
 		iterator operator-(const int &n) const {
-            iterator temp(vec,pos-n);
-            return temp;
+            return iterator(vec,pos-n);
 			//TODO
 		}
 		// return the distance between two iterators,
@@ -102,14 +100,12 @@ iterator temp(vec,pos+n);
 			//TODO
 		}
 		iterator& operator+=(const int &n) {
-            iterator temp(vec,pos+n);
-            this=temp;
+           pos+=n;
             return *this;
 			//TODO
 		}
 		iterator& operator-=(const int &n) {
-            iterator temp(vec,pos-n);
-            this=temp;
+            pos-=n;
             return *this;
 			//TODO
 		}
@@ -195,13 +191,11 @@ iterator temp(vec,pos+n);
             return *this;
         }
         const_iterator operator+(const int &n) const {
-            const_iterator temp(vec,pos+n);
-            return temp;
+            return const_iterator(vec,pos+n);
             //TODO
         }
         const_iterator operator-(const int &n) const {
-            const_iterator temp(vec,pos-n);
-            return temp;
+            return const_iterator(vec,pos+n);
             //TODO
         }
         // return the distance between two iterators,
@@ -216,14 +210,12 @@ iterator temp(vec,pos+n);
             //TODO
         }
         const_iterator& operator+=(const int &n) {
-            const_iterator temp(vec,pos+n);
-            this=temp;
+            pos+=n;
             return *this;
             //TODO
         }
         const_iterator& operator-=(const int &n) {
-            const_iterator temp(vec,pos-n);
-            this=temp;
+            pos-=n;
             return *this;
             //TODO
         }
@@ -426,18 +418,13 @@ iterator temp(vec,pos+n);
 	 * returns an iterator pointing to the inserted value.
 	 */
 	iterator insert(iterator pos, const T &value) {
-        //if (pos.vec!=element){return ;}
-       //std:: cout<<pos.pos<<std::endl;
         if (current_size==capacity) doublespace();
         current_size++;
         for (int i = current_size-1; i >pos.pos ; --i) {
-            element[i]= new T(*element[i-1]);
+            element[i]= element[i-1];
         }
         element[pos.pos]=new T(value);
-        iterator temp;
-        temp.vec=element;
-        temp.pos=pos.pos;
-        return temp;
+        return iterator(element,pos.pos);
 	}
 	/**
 	 * inserts value at index ind.
@@ -449,13 +436,10 @@ iterator temp(vec,pos+n);
         if (current_size==capacity) doublespace();
         current_size++;
         for (int i = current_size-1; i >ind ; --i) {
-            element[i]= new T(*element[i-1]);
+            element[i]= element[i-1];
         }
         element[ind]=new T(value);
-        iterator temp;
-        temp.vec=element;
-        temp.pos=ind;
-        return temp;
+        return iterator(element,ind);
 	}
 	/**
 	 * removes the element at pos.
@@ -466,7 +450,7 @@ iterator temp(vec,pos+n);
 //        if (pos.vec!=element){return ;}
         current_size--;
         for (int i = pos.pos; i <current_size ; ++i) {
-            element[i]= new T(*element[i+1]);
+            element[i]= element[i+1];
         }
         iterator temp;
         temp.vec=element;
@@ -482,7 +466,7 @@ iterator temp(vec,pos+n);
         if (ind>=current_size) throw index_out_of_bound();
         current_size--;
         for (int i = ind; i <current_size ; ++i) {
-            element[i]= new T(*element[i+1]);
+            element[i]= element[i+1];
         }
         int pos1=ind;
         iterator temp;
